@@ -1,0 +1,430 @@
+\documentclass[12pt]{jsarticle}
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=15mm,bottom=20mm}	
+\usepackage{amssymb}
+\usepackage{mathcomp}
+\usepackage{amsmath}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{multicol}
+\begin{titlepage}
+\title{\Huge{航空宇宙システム学実験(12/20実施) \newline「超音速風洞のしくみと超音速流れの可視化」}}
+\author{\large{中野文哉 (03-180330)} \and \large{\underline{野本陽平 (03-180332) (執筆)}} \and \large{長谷部早紀 (03-180334)} \and \large{林志穂 (03-180335)} \and \large{原惇 (03-180336)} \and \large{鈴木(宏)研究室}}
+\date{\large{2019年1月8日}}	
+\thispagestyle{empty}
+\end{titlepage}
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{目的}
+\begin{enumerate}
+\item 超音速風洞システムの構成と各部の役割を知る. (見学)
+\item シュリーレン法による圧縮正流れの可視化原理と装置を知る.
+\item 模型(くさび\&鈍頭円錐)周りの流れをシュリーレン法により可視化し, その結果から超音速流れ場の構造に関する考察を行う.
+\end{enumerate}
+
+\section{実験装置}
+主に以下に述べる装置を利用して実験を行う.
+\begin{multicols}{2}
+\begin{itemize}
+\item 仕切り弁と急開弁
+\item ノズルとディフューザー
+\item 測定器
+\item 模型(くさびは除く)
+\item コンデンサレンズとスリット
+\item カメラ
+\item コンピュータ
+\item ペンレコ
+\end{itemize}
+\end{multicols}
+
+\section{理論}
+\subsection{超音速風洞システム}
+超音速風洞の概要は以下図1の通りである.
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=10cm]{1.png}
+\caption{小型超音速風洞の構成}
+\end{center}
+\end{figure}
+\newpage
+\subsubsection{全体のシステム構成}
+圧縮機で高圧にされた空気が一瞬で解放されることでノズルにより加速し超音速になる. 測定部を通過したのち亜音速に減速するために第二スロートを通過する.
+ 
+\subsubsection{各部の役割}
+\noindent
+{\bf \textcircled{\scriptsize1}空気圧縮機, \textcircled{\scriptsize2}除湿機} \newline
+ここでは空気を圧縮し水蒸気を取り除く. これは水蒸気を残したままにしておくと空気の温度が下がった際に凝結しシュリーレン法の精度を下げてしまうからである. シュリーレン法は密度構造を評価する方法であるため, 液体と気体が混合している状態は不都合である. \newline \newline
+{\bf \textcircled{\scriptsize3}高圧貯気槽} \newline
+高圧で除湿された空気を貯蔵する. \newline\newline
+{\bf \textcircled{\scriptsize4}6B配管} \newline
+高圧貯気槽で高圧に保たれた空気を風洞へ運ぶ. \newline\newline
+{\bf \textcircled{\scriptsize5}5B仕切弁} \newline
+高圧貯気槽と測定部を隔てる一つ目の弁. 遮断性が高く元栓として使われる. \newline\newline
+{\bf \textcircled{\scriptsize6}5B急開弁} \newline
+高圧貯気槽と測定部を隔てる二つ目の弁. 90度回転することで即座に開くことができるボールバルブである. \newline\newline
+{\bf \textcircled{\scriptsize7}ダイアフラム式調圧弁} \newline
+流路を狭める. 実験中は固定したままで操作しない. \newline\newline
+{\bf \textcircled{\scriptsize8}拡大管} \newline
+整流筒へ導く前に亜音速に統一する. \newline\newline
+{\bf \textcircled{\scriptsize9}整流筒} \newline
+流速を落として気流の乱れを減らす. \newline\newline
+{\bf \textcircled{\scriptsize10}縮流管} \newline
+流れ方向に円形だった管を長方形に変える. 円形のラバルノズルは加工が困難であることと, 二次元流れを見る上では長方形でも問題はないためである. \newline \newline
+{\bf \textcircled{\scriptsize11}二次元ノズル} \newline
+空気を超音速に加速する役割を持っている. 以下では等エントロピー膨張の関係式, およびラバルノズルにおけるマッハ数と断面積の関係を導いておく. 淀み点圧力を$p_0$, 出口圧力を$p$, 速度を$u$, 音速を$a$, 温度を$T$, 密度を$\rho$とする. エネルギー式は一般に式(1)である.
+\begin{eqnarray}
+\cfrac{a^2}{\gamma - 1} + \cfrac{u^2}{2} = Const
+\end{eqnarray}
+淀み点では速度が0なので, 式(2)を得る.
+\begin{eqnarray}
+\cfrac{a^2}{\gamma - 1} + \cfrac{u^2}{2} = \cfrac{{a_0}^2}{\gamma - 1}
+\end{eqnarray}
+式(2)の両辺を$a^2$で割り, $a^2=\gamma RT$の音速の式, さらに$M=u/a$のマッハ数の定義式を代入すると式(3)を得る.
+\begin{eqnarray}
+\cfrac{{a_0}^2}{a^2} = \cfrac{T_0}{T} = 1 + \cfrac{\gamma - 1}{2} M^2
+\end{eqnarray}
+等エントロピーの式は, 一般に式(4)である.
+\begin{eqnarray}
+\cfrac{p}{T^{\frac{\gamma}{\gamma - 1}}} = Const
+\end{eqnarray}
+式(3), (4)より以下の式(5)を得る. これが配布プリントに記されている等エントロピー膨張の関係式である.
+\begin{eqnarray}
+\cfrac{p_0}{p} = (\cfrac{T_0}{T})^{\frac{\gamma}{\gamma - 1}} = (1 + \cfrac{\gamma - 1}{2}M^2)^{\frac{\gamma}{\gamma-1}}
+\end{eqnarray}
+次にラバルノズルにおけるマッハ数と断面積の関係式を導く. 以下は式(6)が状態方程式, 式(7)が連続の式, 式(8)が運動方程式, 式(9)が等エントロピーの式でいずれも基礎式である. 以降はこれらの式を用いる.
+\begin{eqnarray}
+\cfrac{d\rho}{\rho} + \cfrac{dT}{T} &=& \cfrac{dp}{p} \\
+\cfrac{d\rho}{\rho} + \cfrac{du}{u} + \cfrac{dA}{A} &=& 0 \\
+udu + \cfrac{1}{\rho}dp &=& 0 \\
+\cfrac{dp}{p} - \gamma \cfrac{d\rho}{\rho} &=& 0
+\end{eqnarray}
+音速の式$a^2 = dp/d\rho$により式(8)から$p$を消去することで式(10)を得る.
+\begin{eqnarray}
+udu = -a^2 \cfrac{d\rho}{\rho}
+\end{eqnarray}
+式(10)の両辺を$a^2$で割り, さらに$M=u/a$のマッハ数の定義式を代入すると式(11)を得る.
+\begin{eqnarray}
+\cfrac{d\rho}{\rho} = M^2 \cfrac{du}{u}
+\end{eqnarray}
+式(11)を式(7)に代入し整理することで以下の式(12)と式(13)を得る.
+\begin{eqnarray}
+\cfrac{du}{u} &=& \cfrac{1}{M^2 -1}\cfrac{dA}{A} \\
+\cfrac{d\rho}{\rho} &=& - \cfrac{M^2}{M^2 -1}\cfrac{dA}{A}
+\end{eqnarray}
+式(13)を式(9)に代入することで式(14)を得る.
+\begin{eqnarray}
+\cfrac{dp}{p} = -\cfrac{\gamma M^2}{M^2 -1}\cfrac{dA}{A}
+\end{eqnarray}
+式(13)と式(14)を式(6)に代入することで以下の式(15)を得る.
+\begin{eqnarray}
+\cfrac{dT}{T} = -\cfrac{(\gamma -1) M^2}{M^2 -1}\cfrac{dA}{A}
+\end{eqnarray}
+さて, 音速の式$a^2 =\gamma RT$は対数微分することで以下の式(16)を得る.
+\begin{eqnarray}
+2\cfrac{da}{a} = \cfrac{dT}{T}
+\end{eqnarray}
+式(15)と式(16)より, 以下の式(17)を得る.
+\begin{eqnarray}
+\cfrac{da}{a} = -\cfrac{(\gamma -1) M^2}{2(M^2 -1)}\cfrac{dA}{A}
+\end{eqnarray}
+同様に, $M=u/a$の対数微分により以下の式(18)を得る.
+\begin{eqnarray}
+\cfrac{dM}{M} = \cfrac{du}{u} - \cfrac{da}{a}
+\end{eqnarray}
+式(18)に式(14)と式(7)を代入することで以下の式(19)を得る.
+\begin{eqnarray}
+\cfrac{dM}{M} = \cfrac{2+(\gamma -1) M^2}{2(M^2 -1)}\cfrac{dA}{A}
+\end{eqnarray}
+得た微分方程式(19)に対し, 今回$M=1$で$A^{\ast}$かつ任意の$M$で断面積$A$を満たしていて欲しいので, 左辺を$M$について$M$から1まで, 右辺を$A$から$A^{\ast}$まで積分することで以下の式(20)および式(21)を得る. これが求めたかったラバルノズルにおけるマッハ数と断面積の関係式である.
+\begin{eqnarray}
+\cfrac{A}{A^{\ast}} &=& \cfrac{1}{M}[\cfrac{(\gamma -1)M^2 + 2}{\gamma +1}]^{\frac{\gamma +1}{2(\gamma -1)}} \\
+(\cfrac{A}{A^{\ast}})^2 &=& \cfrac{1}{M^2}[\cfrac{2}{\gamma +1}(1+\cfrac{\gamma -1}{2}M^2)]^{\frac{\gamma +1}{\gamma -1}}
+\end{eqnarray}
+これを図に表すと以下のようになる.
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=8cm]{5.png}
+\caption{ラバルノズルにおけるマッハ数と断面積の関係}
+\end{center}
+\end{figure} \newpage \noindent
+{\bf \textcircled{\scriptsize12}測定室} \newline
+スロートにより超音速に加速された気体と模型の干渉を測定する. 模型は上流への影響を考慮しスティング固定されており, 外部からの空気の侵入を防ぐために窓にはOリングがシールとして使用されている. \newline\newline
+{\bf \textcircled{\scriptsize13}第二スロート} \newline
+収縮拡大管により測定室を抜けた空気を減速することで, 騒音が出ないようにしている. \newline\newline
+{\bf \textcircled{\scriptsize14}ディフューザー} \newline
+測定室を通過した気流を整え, 逆流しないようにする. \newline\newline
+{\bf \textcircled{\scriptsize15}消音筒} \newline
+気流を受け止め, 騒音が発生しないようにする.
+
+\subsection{くさび模型にできる斜め衝撃波とマッハ数の関係}
+ここではくさび模型のくさび角$\theta$と衝撃波角$\beta$の間の関係を導く. 斜め衝撃波の上流速度を$V_1$, 下流速度を$V_2$とする. $V_1$の衝撃波に垂直な成分を$V_{n1}$, 平行な成分を$V_{t1}$とする. $V_{n2}$, $V_{t2}$も同様に定義する. まず, 斜め衝撃波では一般に以下の式(22)が成り立つ.
+\begin{eqnarray}
+V_{t1} = V_{t2} = V_t
+\end{eqnarray}
+くさび角, 衝撃波角の幾何学的関係より以下の式(23), (24)を得る.
+\begin{eqnarray}
+\cfrac{V_{n1}}{V_t} &=& \tan{\beta} \\
+\cfrac{V_{n2}}{V_t} &=& \tan(\beta-\theta)
+\end{eqnarray}
+式(24)で式(23)を割り, 連続の式$\rho_1 V_{n1}=\rho_2 V_{n2}$を代入することで以下の式(25)を得る.
+\begin{eqnarray}
+\cfrac{V_{n1}}{V_{n2}} = \cfrac{\tan{\beta}}{\tan(\beta-\theta)} = \cfrac{\rho_2}{\rho_1}
+\end{eqnarray}
+ところで垂直衝撃波関係式は以下の式(26)のように与えられる.
+\begin{eqnarray}
+\cfrac{\rho_2}{\rho_1} = \cfrac{(\gamma+1){M_1}^2}{(\gamma-1){M_1}^2+2}
+\end{eqnarray}
+衝撃波に垂直なマッハ数成分$M_{n1}$は, 以下の式(27)のように与えられる.
+\begin{eqnarray}
+M_{n1} = \cfrac{V_{n1}}{a_1} = \cfrac{V_1}{a_1}\sin\beta = M_1 \sin\beta
+\end{eqnarray}
+式(27)を式(26)に代入することで, 以下の式(28)を得る.
+\begin{eqnarray}
+\cfrac{\rho_2}{\rho_1} = \cfrac{(\gamma+1){M_1}^2\sin^2\beta}{(\gamma-1){M_1}^2\sin^2\beta+2}
+\end{eqnarray}
+式(28)を式(25)に代入することで, 以下の式(29)を得る.
+\begin{eqnarray}
+\cfrac{\tan(\beta-\theta)}{\tan\beta} = \cfrac{(\gamma-1){M_1}^2\sin^2\beta+2}{(\gamma+1){M_1}^2\sin^2\beta}
+\end{eqnarray}
+式(29)を変形することで, 式(30)を得る.
+\begin{eqnarray}
+\tan\theta = \cfrac{2\cot\beta({M_1}^2\sin^2\beta-1)}{{M_1}^2(\gamma+\cos2\beta)+2)}
+\end{eqnarray}
+式(30)の右辺は$\beta$と$M$のみの関数となっており, これら二つのパラメータが与えられることでくさび角$\theta$を得る. 垂直衝撃波上流マッハ数は1より大きくなくてはならないから, 以下の式(31)が成り立つ.
+\begin{eqnarray}
+M_1\sin\beta > 1
+\end{eqnarray}
+これを整理することで, 以下の式(32)を最終的に得る.
+\begin{eqnarray}
+\arcsin(\cfrac{1}{M_1}) \leqq \beta \leqq \cfrac{\pi}{2}
+\end{eqnarray}
+これを図示したものが図3である.
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=8cm]{4.png}
+\caption{くさび模型にできる斜め衝撃波とマッハ数の関係}
+\end{center}
+\end{figure}
+
+\section{実験手順}
+\begin{enumerate}
+\item 超音速風洞システムの構成と各部の役割について見学\&説明
+\item シュリーレン光学系のチェック, 各部の確認 (光学系は既にセットされている)
+\item 圧力測定系のチェック
+\item 風洞運転の手順確認 (ただし, 装置の運転は主に研究室スタッフが行う)
+\item 高圧貯気槽の充填状態を確認 (実験時には, 既に充填がされている)
+\item 通風実験 (15$\phi$半球, 鈍頭円錐2種, 頂角20度くさび)
+\begin{enumerate}
+\item 測定部の確認(模型は正しく固定されているか？測定部に忘れ物はないか？)
+\item 測定部を閉じる
+\item 風洞運転
+\begin{enumerate}
+\item 各弁が閉になっていることを確認
+\item 仕切り弁を開く
+\item 調圧弁を半開にする
+\item 圧力測定用ペンレコおよびビデオスタート
+\item 急閉弁を開く(気流スタート)
+\item 調圧弁を制御して貯気槽圧を設定値に保つ
+\item 測定部にて実験を行う(ここではシュリーレン写真撮影)
+\item 急閉弁を閉じる(気流ストップ)
+\item 仕切り弁を閉じる
+\item 急閉弁を開き仕切り弁下流部の圧力を放出, その後急閉弁と調圧弁を閉じる
+\end{enumerate}
+\item ペンレコの圧力履歴やビデオにより, 実験が正しく行われたことかチェック
+\item 空気圧縮機を運転して高圧貯気槽を充填する. この間に模型の取り替えを行う.
+\end{enumerate}
+\item その日の実験に関するまとめ. ペンレコ出力と画像記録DVDを持ち帰る.
+\end{enumerate}
+
+\section{結果}
+\subsection{ノズル形状から予測される風洞マッハ数}
+今回用いた二次元ノズルの形状は, 以下の通りである.
+\begin{figure}[htbp]
+ \begin{minipage}{0.5\hsize}
+  \begin{center}
+   \includegraphics[width=55mm]{2.png}
+  \end{center}
+  \caption{風洞形状}
+  \label{fig:one}
+ \end{minipage}
+ \begin{minipage}{0.5\hsize}
+  \begin{center}
+   \includegraphics[width=45mm]{3.png}
+  \end{center}
+  \caption{ノズル形状}
+  \label{fig:two}
+ \end{minipage}
+\end{figure}
+\newline
+紙面に垂直な流路幅が一定であることに注意すると, スロート部分の面積を$A^{\ast}$, 出口部分の面積を$A_e$とすると,
+\begin{eqnarray*}
+\frac{A^{\ast}}{A_e} = \frac{2.37}{4.07} = 0.582
+\end{eqnarray*}
+これと前述の図2より, \underline{$M=2.0$}と定まる.
+
+\subsection{圧力測定から予測される風洞マッハ数}
+実験当日の大気圧, 気温は以下の通り.
+\begin{eqnarray*}
+P &=& 102.42 kPa \\
+T &=& 8{}^\circ\mathrm{C}
+\end{eqnarray*}
+ペンレコの記録から圧力を求める方法は, 以下の通りである.
+\begin{enumerate}
+\item 較正電圧V(Volt)に対するペンレコ記録紙への出力目盛りNを読む.
+\item 記録紙1目盛りあたりの換算係数[Volt/目盛り]を求める.
+\item 各模型に対する実験記録より,CH1からCH3の出力目盛り$N_x$を測定する.
+\item 換算係数$\times N_x$より圧力変換器出力電圧V(Volt)を求める.
+\item 測定圧力P[kPa] = 出力電圧$\times$修正較正係数$K_x$
+\end{enumerate}
+使用したペンレコの諸元は以下の通り.
+\begin{table}[htb]
+  \begin{center}
+    \caption{ペンレコーダー詳細}
+    \begin{tabular}{|c|c|c|} \hline
+      ペンレコ & CH1 & CH3 \\ \hline
+      圧力測定場所 & 整流筒圧力 & ノズル圧力 \\ \hline
+      修正較正係数$K_x$ & 47.4981 & 24.5315 \\ \hline
+      較正電圧[V] & 2.5 & 2.503 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table} \newline
+4つの模型に対して測定を行なった結果, 以下のような結果を得た;
+\begin{table}[htb]
+  \begin{center}
+    \caption{15$\phi$半球}
+    \begin{tabular}{|c|c|c|} \hline
+       & CH1 & CH3 \\ \hline
+      較正電圧Vに対する出力[cm] & 2.96 & 3.10 \\ \hline
+      換算係数[V/cm] & 0.845 & 0.807 \\ \hline
+      出力目盛[cm] & 4.75 & -3.15 \\ \hline
+      圧力変換器出力電圧[V] & 4.01 & -2.54 \\ \hline
+      測定圧力[kPa] & 190.47 & -62.36 \\ \hline
+      実際の圧力[kPa] & 292.89 & 40.06 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+\begin{table}[htb]
+  \begin{center}
+    \caption{鈍頭円錐A}
+    \begin{tabular}{|c|c|c|} \hline
+       & CH1 & CH3 \\ \hline
+      較正電圧Vに対する出力[cm] & 2.99 & 3.06 \\ \hline
+      換算係数[V/cm] & 0.836 & 0.818 \\ \hline
+      出力目盛[cm] & 5.20 & -3.10 \\ \hline
+      圧力変換器出力電圧[V] & 4.35 & -2.54 \\ \hline
+      測定圧力[kPa] & 206.62 & -62.36 \\ \hline
+      実際の圧力[kPa] & 309.04 & 40.06 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+\begin{table}[htb]
+  \begin{center}
+    \caption{鈍頭円錐B}
+    \begin{tabular}{|c|c|c|} \hline
+       & CH1 & CH3 \\ \hline
+      較正電圧Vに対する出力[cm] & 2.97 & 3.02 \\ \hline
+      換算係数[V/cm] & 0.842 & 0.829 \\ \hline
+      出力目盛[cm] & 5.47 & -3.05 \\ \hline
+      圧力変換器出力電圧[V] & 4.61 & -2.53 \\ \hline
+      測定圧力[kPa] & 218.76 & -62.06 \\ \hline
+      実際の圧力[kPa] & 321.18 & 40.36 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+\begin{table}[htb]
+  \begin{center}
+    \caption{頂角$20^{\circ}$くさび}
+    \begin{tabular}{|c|c|c|} \hline
+       & CH1 & CH3 \\ \hline
+      較正電圧Vに対する出力[cm] & 2.96 & 3.04 \\ \hline
+      換算係数[V/cm] & 0.845 & 0.823 \\ \hline
+      出力目盛[cm] & 4.80 & -3.21 \\ \hline
+      圧力変換器出力電圧[V] & 4.06 & -2.64 \\ \hline
+      測定圧力[kPa] & 192.84 & -64.76 \\ \hline
+      実際の圧力[kPa] & 295.26 & 37.66 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table} \newpage \noindent
+ここで測定圧力はゲージ圧力なので, 実際の圧力はこれに大気圧を足したものになる. 式(5)の等エントロピー膨張の関係式よりマッハ数を計算しまとめた表が以下の表6になる.
+\begin{table}[htb]
+  \begin{center}
+    \caption{マッハ数まとめ}
+    \begin{tabular}{|c|c|} \hline
+      模型 & マッハ数 \\ \hline
+      15$\phi$半球 & 1.956 \\ \hline
+      鈍頭円錐A & 1.991 \\ \hline
+      鈍頭円錐B & 2.011 \\ \hline
+      頂角$20^{\circ}$くさび & 2.001 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage
+\subsection{シュリーレン写真から予測される風洞マッハ数}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=60mm]{6.png}
+\caption{くさび模型に発生するななめ衝撃波}
+\end{center}
+\end{figure} \noindent
+図6より衝撃波角$\beta$は38.2[deg]. 偏角$\theta$は10[deg]なので, 図3からマッハ数を読み取ると丁度$M\approx2.0$となっている.
+
+\section{考察}
+\subsection{シュリーレン写真の比較から分かること}
+\subsubsection{衝撃波離脱距離}
+鈍頭円錐A, Bおよび15$\phi$半球について鈍頭直径と離脱距離の比を計算したところ, 表7のような結果を得た. 離脱距離は鈍頭の直径が大きくなるほど大きくなっているが, この比はほぼ一定であることが分かった.
+\begin{figure}[htbp]
+ \begin{minipage}{0.5\hsize}
+  \begin{center}
+   \includegraphics[width=60mm]{7.png}
+  \end{center}
+  \caption{鈍頭円錐A}
+ \end{minipage}
+ \begin{minipage}{0.5\hsize}
+  \begin{center}
+   \includegraphics[width=60mm]{8.png}
+  \end{center}
+  \caption{鈍頭円錐B}
+ \end{minipage}
+\end{figure}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=60mm]{9.png}
+\caption{15$\phi$半球}
+\end{center}
+\end{figure}
+\begin{table}[htb]
+  \begin{center}
+    \caption{鈍頭直径と離脱距離の関係まとめ}
+    \begin{tabular}{|c|c|c|c|} \hline
+      模型 & 鈍頭直径$L[mm]$ & 離脱距離$\delta[mm]$ & $\frac{\delta}{L}$ \\ \hline
+      鈍頭円錐A & 8 & 0.7 & 0.0875 \\ \hline
+      鈍頭円錐B & 16 & 1.4 & 0.0875 \\ \hline
+      15$\phi$半球 & 15 & 1.3 & 0.0867 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage
+\subsubsection{その他}
+あまり実験として望ましいことではないが, 衝撃波を一回通過する空気と二回通過する空気では性質が異なるのだが, その干渉が起こっていることも読み取れる.
+
+\subsection{測定誤差について}
+理論から得た$M=2.0$に対し, 僅かではあるが測定誤差があった. これの原因としてはペンレコの記録を自分が(十分配慮したが)正確に読み取れていない可能性があること, 淀み点圧力$p_0$は本当に淀み点となっているか確かでないこと(整流筒が100\%の機能を果たしていると考えられないこと)などが挙げられる.
+
+\section{感想} \noindent
+{\bf 中野文哉 (03-180330)} \newline
+シュリーレン法ならば測定部に物理的な装置を置かずに流れを見ることができるというのが面白かった。これで見られるのは密度勾配だが、例えば干渉を用いるような高精度の光学系で密度そのものを読み取れるようにできたら良いのではないかと感じた。 \newline
+{\bf 野本陽平 (03-180332); レポート執筆者} \newline
+古い設備なのでちゃんとした精度でマッハ数が測定できるのか初めは懐疑的であったが, 測定誤差となりうる原因がいくつかあるにも関わらずほぼ理論に沿った結果を出したため驚いた. 学科に入った当初から「航空宇宙工学は総合工学である」という言葉は何度も聞いてきていたが, 遂に光学まで実験に噛んできたため, 航空宇宙工学の裾野の広さを改めて感じることができた. 理論・考察パートでは現在履修している空気力学第三の復習もできたため, タイミングとしてもこのレポートの執筆担当になることができて非常によかった. \newline
+{\bf 長谷部早紀 (03-180334)} \newline
+空気力学第三の講義で衝撃波を勉強しているため、現象が起こる原理をより理解することができた。超音速風洞実験の結果の写真は何度か目にしたことがあったが、それがどのような結果を表しているのかの読み取り方は知らなかった。今回、シュリーレン法での可視化方法を学ぶことができ、その写真が衝撃波の様子を綺麗に表していることがわかった。\newline
+{\bf 林志穂 (03-180335)} \newline
+シュリーレン写真により衝撃波を可視化し、その変遷や垂直衝撃波の発生を観察することができた。風洞の断面形状は円形・正方形を保って断面積変化させていると思っていたので、一辺長固定で長方形変化させていることを知れておいて良かった。また、メインの装置ではないものの、ペンレコーダーは初めて見る機械で驚いた。最近では記録をPC内に保存することが多い中、直接紙にグラフが記録されていく様子は見ていて興味深いものだった。 \newline
+{\bf 原惇 (03-180336)} \newline
+超音速気流によって発生する衝撃波を可視化し、それを教授に解説していただけるというのがとてもよかった。
+鈍頭物体の先端形状によって、衝撃波の角度が異なるというのが実感できた。 \newline
+
+\end{document}

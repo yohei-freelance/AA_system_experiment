@@ -1,0 +1,485 @@
+\documentclass[12pt]{jsarticle}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{left=20mm,right=20mm,top=25mm,bottom=20mm}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry    		% Activate to begin paragraphs with an empty line rather than an indent
+				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+%SetFonts
+\usepackage{mathcomp}
+\begin{titlepage}
+\title{\Huge{航空宇宙システム学実験 「MATLABを使った制御系設計とシミュレーション」}}
+\author{\LARGE{5班} \\ \\ \\ \large{03-180331 中野 文哉} \\ \large{03-180332 野本 陽平} \\ \large{03-180334 長谷部 早紀} \\  \large{03-180335 林 志穂} \\ {03-180336 原 惇} \\ \\ \large{そして、親切な中須賀・船瀬研究室のみなさん！}}
+\date{\large{提出：2018年10月19日}}	
+\thispagestyle{empty}						% Activate to display a given date or no date
+\end{titlepage}
+\begin{document}
+
+\maketitle
+\newpage
+
+\section*{(注)}
+\noindent
+全セクションにおいて, 実験レポートを記述するのに必要なデータ類は全てレポートの後ろに添付しました.
+\newline
+\begin{description}
+	\item [目的] 与えられた3つの制御対象をモデル化する一連のプロセスにより, MATLABの使用方法や制御に関連する諸知識を生きた形で会得する. 
+	\newline
+	\item [手順] \begin{enumerate}
+	\item 制御対象を解析的にモデル化し, MATLAB上で表現できる運動方程式にする. (主に事前課題の内容に相当. )
+	\item MATLAB上にモデルを構築し, 与えられた数値や自分たちの予想に基づいた設定でシミュレーションを実施, グラフを得る. 
+	\item 特性根の安定性解析やルートローカス, 補償器等の航空宇宙自動制御第一で得た古典制御の手法により, より良い制御を得ることを模索する. 
+	\item 上で得た制御系を再度導入し, 制御成績を調べることで予測される性能との比較を行う. 
+\end{enumerate}
+\end{description}
+
+\section*{目次}
+\begin{enumerate}
+	\item 制御対象1 : 仮想的な安定な対象
+	\item 制御対象2 : バネ・マス系のPD制御
+	\item 制御対象3 : 不安定系の倒立振子
+	\item 感想
+\end{enumerate}
+
+\section{制御対象1: 仮想的な安定な対象}
+\subsection{}
+\begin{eqnarray}
+\frac{1}{(S+1)(S+2)(S+10)}
+\end{eqnarray}
+\newline
+なる制御対象をSIMULINK上にモデル化し, ステップ入力による出力をシミュレートする. シミュレーション時間は100秒. 得たブロック線図と計算結果はそれぞれ図3-1と図3-2として記載している. 
+\subsection{}
+\noindent
+(1)式の伝達関数を持つ制御対象に対し, Pゲインによるフィードバック系を上図のように作る. この時の根軌跡を図3-3に示す. 根軌跡によると安定限界の値Kはおよそ400だった. 
+\newline
+次にKを安定な1, 5, 10, 20, 50, 400の範囲で変えシミュレーションを行った. これらはそれぞれ順に図3-4から図3-9に記載している. 
+
+\subsection{}
+\noindent
+セクション3.2のままでは定常偏差の値が残ってしまうので, これを位相遅れ補償器$\frac{s+a}{s+b}$を直列に入れたモデルで補正する. $a,b$の値はそれぞれ$a=3, b=0.1$とした. その根軌跡と安定限界付近を図3-10と図3-11にそれぞれ示す. 図から,安定限界Kはおよそ　　であった.
+\newline
+またKを1, 5, 10, 20, 50と安定な範囲で変えてシミュレーションを行うと図3-12から図3-16のようになった. ここから位相遅れ補償を導入することにより目的に対する定常偏差が小さくなることが確認できた. 
+
+\subsection{}
+\noindent
+3.3では確かに定常偏差が改良されたが, 即応性がないため収束に時間がかかる. ここでは対処として収束を早めるために$\frac{s+c}{s+d}$の位相進み補償を入れる. c,dの値は$c=1.5,d=15$とした. この時の根軌跡と安定限界付近は図3-17と図3-18にそれぞれ示す.
+\newline
+これらの図を読むことで, 安定限界の値は2860と定まる. またKを1, 5, 10, 20, 50と安定な範囲で変えたシミュレーション結果も図3-19から図3-23に示している.
+
+\subsection{}
+\noindent
+最後に, 位相遅れ補償器のパラメータを変え, $K=50, (a, b) = (3, 0.1)$の元で$(c, d) = (1.5, 30), (5, 15), (5, 30)$として得られた結果を図3-24から図3-26に示した.
+
+
+\section{制御対象2: バネ・マス系のPD制御}
+
+\subsection{}
+この系の運動方程式は, 以下のように記述される。
+\begin{eqnarray}
+M_1 \ddot{\bm{x_1}} &=& -k(\bm{x_1} - \bm{x_2}) + \bm{u_1} \\
+M_2 \ddot{\bm{x_2}} &=& -k(\bm{x_2} - \bm{x_1}) + \bm{u_2} 
+\end{eqnarray}
+状態量$\bm{x} = (x_1, \dot{x_1}, x_2, \dot{x_2})^{\mathrm{T}}$, 制御量$\bm{u} = (u_1, u_2)^{\mathrm{T}}$によって状態方程式を記述すると, 以下のようになる. 
+\begin{eqnarray}
+\dot{\bm{x}} = \left(
+    \begin{array}{cccc}
+      0 & 1 & 0 & 0 \\
+      -\cfrac{k}{M_1} & 0 & \cfrac{k}{M_1} & 0\\
+      0 & 0 & 0 & 1 \\
+      \cfrac{k}{M_2} & 0 & -\cfrac{k}{M_2}& 0
+    \end{array}
+  \right) \bm{x} + 
+  \left(
+    \begin{array}{cc}
+      0 & 0 \\
+      \cfrac{1}{M_1} & 0\\
+      0 & 0 \\
+      0 & \cfrac{1}{M_2}
+    \end{array}
+   \right) \bm{u}
+\end{eqnarray}
+\newline
+すなわち以下のように定義することにする; 
+\newline
+\begin{eqnarray}
+\bm{A} = \left(
+    \begin{array}{cccc}
+      0 & 1 & 0 & 0 \\
+      -\cfrac{k}{M_1} & 0 & \cfrac{k}{M_1} & 0\\
+      0 & 0 & 0 & 1 \\
+      \cfrac{k}{M_2} & 0 & -\cfrac{k}{M_2}& 0
+    \end{array}
+  \right), 
+\bm{B} = \left(
+    \begin{array}{cc}
+      0 & 0 \\
+      \cfrac{1}{M_1} & 0\\
+      0 & 0 \\
+      0 & \cfrac{1}{M_2}
+    \end{array}
+   \right)
+\end{eqnarray}
+
+\begin{eqnarray}
+\bm{x} = \bm{Ax} + \bm{b}
+\end{eqnarray}
+
+\subsection{}
+\noindent
+上で得た方程式をラプラス変換する. $\mathcal{L}[\bm{x}] = \bm{X}(s)$と表せば, 
+\begin{eqnarray}
+s\mathcal{L}[\bm{x}] &=& \bm{A} \mathcal{L}[\bm{x}] + \bm{B} \mathcal{L}[\bm{u}] \\
+\therefore s\bm{X}(s) &=& \bm{A}\bm{X}(s) + \bm{B}\bm{U}(s) \\
+\therefore \bm{X}(s) &=& (s\bm{I}-\bm{A})^{-1}\bm{B}\bm{U}(s) 
+\end{eqnarray}
+今, 伝達関数を求めたいから$\bm{y} = (x_1, x_2)^{\mathrm{T}}$とすると, 
+\begin{eqnarray}
+\bm{y} = \bm{C}\bm{x} ,
+\bm{C} = \left(
+    \begin{array}{cccc}
+      1 & 0 & 0 & 0 \\
+      0 & 0 & 1 & 0
+    \end{array}
+  \right)
+\end{eqnarray}
+故に, 
+\begin{eqnarray}
+\therefore \bm{Y}(s) = \bm{C}(s\bm{I}-\bm{A})^{-1}\bm{B}\bm{U}(s) 
+\end{eqnarray}
+伝達関数$G_1(s)$は, 
+\begin{eqnarray}
+G_1(s) &=& \bm{C}(s\bm{I}-\bm{A})^{-1}\bm{B} \\
+&=& \cfrac{1}{s^2(s^2 + \cfrac{k}{M_1} + \cfrac{k}{M_2})}
+\end{eqnarray}
+となる. 
+
+\subsection{}
+2つの台車を合わせた系全体の重心位置を$p_1$, バネの自然長からの伸びを$p_2$とすると, 
+\begin{eqnarray}
+p_1 &=& \frac{M_1}{M_1 + M_2}x_1 + \frac{M_2}{M_1 + M_2}x_2 \\
+p_2 &=& x_2 -x_1
+\end{eqnarray}
+それぞれについての運動方程式は, 
+\begin{eqnarray}
+\ddot{p_1} &=& \frac{u_1 + u_2}{M_1 + M_2} \\
+\ddot{p_2} &=& \frac{u_2}{M_2} - \frac{u_1}{M_1} - (\frac{k}{M_1} + \frac{k}{M_2})p_2
+\end{eqnarray}
+$\bm{p} = (p_1, p_2)^{\mathrm{T}}$とすれば, 
+\begin{eqnarray}
+\bm{p} &=& \bm{D}\bm{y} , \bm{D} =  \left(
+    \begin{array}{cc}
+      \cfrac{M_1}{M_1 + M_2} & \cfrac{M_2}{M_1 + M_2} \\
+      -1 & 1
+    \end{array}
+  \right)
+\end{eqnarray}
+である。
+\begin{eqnarray}
+\bm{P}(s) = \bm{D}\bm{Y}(s) = \bm{D}\bm{C}(s\bm{I} - \bm{A})^{-1}\bm{B}\bm{U}(s) 
+\end{eqnarray}
+故に$\bm{u}$から$\bm{y}$への伝達関数を$\bm{G_2}(s)$とすると, 
+\begin{eqnarray}
+\bm{G_2}(s) &=& \bm{D}\bm{C}(s\bm{I} - \bm{A})^{-1}\bm{B} \\
+&=& \bm{D}\bm{G_1}(s) \\
+&=&  \left(
+    \begin{array}{cc}
+      \cfrac{1}{(M_1+M_2)s^2} & \cfrac{1}{(M_1+M_2)s^2} \\
+      -\cfrac{1}{M_1 s^2 + (1+\cfrac{M_1}{M_2})k} & \cfrac{1}{M_2 s^2 + (1+\cfrac{M_1}{M_2})k}
+    \end{array}
+  \right)
+\end{eqnarray}
+
+\subsection{}
+まず$p_1$と$p_2$の運動を解析的に解くことを考える. $\mathcal{L}[\delta(t)] = 1$なので
+\begin{eqnarray}
+\bm{U}(s) = (U, 0)^{\mathrm{T}}
+\end{eqnarray}
+よって
+\begin{eqnarray}
+\bm{P(s)} &=& \bm{G_2(s)}\bm{U}(s) \\
+&=&  \left(
+    \begin{array}{cc}
+      \cfrac{1}{2Ms^2} & \cfrac{1}{2Ms^2} \\
+      -\cfrac{1}{Ms^2 + 2k} & \cfrac{1}{Ms^2 + 2k} 
+    \end{array}
+  \right)\left(
+    \begin{array}{c}
+      U \\
+      0
+    \end{array}
+   \right) 
+= \left(
+    \begin{array}{c}
+      \cfrac{U}{2Ms^2} \\
+      -\cfrac{U}{Ms^2 + 2k}
+    \end{array}
+   \right) 
+\end{eqnarray}
+これを反映したMATLAB上の配置図が図2.1である.
+\newline
+(25)をラプラス逆変換すると, 
+\begin{eqnarray}
+\bm{p} &=& \mathcal{L}^{-1}[\bm{P(s)}] \\
+&=& \left(
+    \begin{array}{c}
+      \cfrac{U}{2M} t \\
+      -\cfrac{U}{\sqrt{2kM}}\sin{\sqrt \frac{2k}{M} t}
+    \end{array}
+   \right) 
+\end{eqnarray}
+実際のシミュレーション結果は図2.2と図2.3にそれぞれ示したが, 確かに$p_1$は線形で$p_2$はsinによる挙動を見せている.
+
+\subsection{}
+\noindent
+バネの伸び$p_2$を$u_2$にフィードバックしてバネの振動を止めることを考える. 問題の指定により
+\begin{eqnarray}
+\bm{u_2} = K_{P} (\bm{p_2} + K_{D} \dot{\bm{p}_2})
+\end{eqnarray}
+なるPD制御を行うことにする. ただし$u_1 = 0$とする. 振動が止まるための$K_P, K_D$の解析的な条件について, 
+\begin{eqnarray}
+P(s) = \left(
+    \begin{array}{cc}
+      \cfrac{1}{2s^2} & \cfrac{1}{2s^2} \\
+      -\cfrac{1}{s^2 + 4} & \cfrac{1}{s^2 + 4} 
+    \end{array}
+  \right)\left(
+   \begin{array}{c}
+      U \\
+      K_{P} (1 + sK_{D} P_2 (s))
+    \end{array}
+  \right)
+\end{eqnarray}
+今$P_2$の安定性について考えているので, $P_2$についての式を抜き出して整理すると
+\begin{eqnarray}
+P_2 = \frac{-U}{s^2 - K_{P} K_{D} s + (4 - K_{P})}
+\end{eqnarray}
+$P_2$が安定で, さらに振動しないための条件はフルビッツの安定法より
+
+
+\subsection{}
+\noindent
+前セクションで求めた安定条件を満たすような$K_P$と$K_D$の設定のもとシミュレーションを行った. この時のブロック線図は図2.4に示す. まず, シミュレーション時間は10秒として, $K_P = 2, K_D = -1$とした時の結果は図2.5と図2.6に, $K_P = -2, K_D = 2$とした時の結果は図2.7と図2.8に, $K_P = -100, K_D = 1$とした時の結果は図2.9と図2.10に, $K_P = 3, K_D = -2/3$とした時の結果は図2.11と図2.12に示した. どちらにおいても, フィードバック制御を行った$p_2$については定常値0に収束しており, 前セクションで定めた安定条件が正しかったことがわかった. また, $K_P$が負の領域にも安定領域を持つということもわかった.
+
+\subsection{}
+\noindent
+臨界減衰の条件は$K_{P} K_{D} < 0$かつ特性方程式が重解を持つことである.
+その条件式は, 
+\begin{eqnarray}
+(K_{P} K_{D})^2 - 4 (4 - K_{P}) = 0
+\end{eqnarray}
+ここでは, この臨界値の前後の設定で100秒間のシミュレーションを行った. $K_{P} = 2, K_{D} = -1$とした結果を図に記載した. ここでは, 
+\begin{eqnarray}
+(K_{P} K_{D})^2 - 4 (4 - K_{P}) < 0
+\end{eqnarray}
+を満たしているため, 数式的には減衰振動することが予想されたが, 実際に$p_2$はわずかに減衰振動の挙動を示した. \newline
+一方で$K_{P} = 2, K_{D} = -2$としてみると, 
+\begin{eqnarray}
+(K_{P} K_{D})^2 - 4 (4 - K_{P}) > 0
+\end{eqnarray}
+を満たしているため過減衰することが予想されるが, ここでも実際に$p_2$は過減衰の挙動を示した.
+
+\subsection{}
+\noindent
+系の重心位置$p_1$とバネの伸び$p_2$を$u_1$にフィードバックして系全体を静止させることを考える. 
+\begin{eqnarray}
+\bm{P} = 
+\begin{pmatrix}
+\cfrac{1}{2s^2} & \cfrac{1}{2s^2} \\
+-\cfrac{1}{s^2 + 4} & \cfrac{1}{s^2 + 4} 
+\end{pmatrix}
+\begin{pmatrix}
+4 + K_{P1} (1 + sK_{D1} + \cfrac{K_{I1}}{s}) P_1 \\
+K_{P2} (1 + sK_{D2}) P_2
+\end{pmatrix}
+\end{eqnarray}
+\noindent
+これを$P_2$について解く.各係数は非常に長くなるので$a_n$を用いて簡略化して表記すると,
+
+\begin{eqnarray}
+\tiny{P_2 = \frac{-8s^4}{2s^5 + a_1 s^4 + a_2 s^3 + a_3 s^2 + a_4 s + a_5}}
+\end{eqnarray}
+\newline
+分母の特性多項式に注目して, Routhの安定判別法により値を決めていく. まず, 係数の符号が全て同じであれば良いので, 
+\begin{eqnarray}
+\left\{
+\begin{array}{l}
+a_1 = -K_{P1}K_{D1} - 2K_{P2}K_{D2} > 0 \\ \\
+a_2 = -K_{P1} + 8 - 2K_{P2} + 2K_{P1}K_{P2}K_{D1}K_{D2} > 0 \\ \\
+a_3 = -K_{P1}K_{I1} - 4K_{P1}K_{D1} + 2K_{P1}K_{P2}K_{D2} + 2K_{P1}K_{P2}K_{D1} > 0 \\ \\
+a_4 = -4K_{P1} + 2K_{P1}K_{P2} + 2K_{P1}K_{P2}K_{I1}K_{D2} > 0 \\ \\
+a_5 = -4K_{P1}K_{I1} + 2K_{P1}K_{P2}K_{I1} > 0
+\end{array}
+\right.
+\end{eqnarray}
+ここで, $K_{P2} = 1$, $K_{D2} = -1$として, これらを満たすように値をとる. 例えば以下のような値が考えられる. 
+\begin{eqnarray}
+\left\{
+\begin{array}{l}
+K_{P1} = -10\\ \\
+K_{D1} = 1\\ \\
+K_{I1} = 0.01\\ \\
+K_{P2} = 1\\ \\
+K_{D2} = -1
+\end{array}
+\right.
+\end{eqnarray}
+\noindent
+よって特性多項式は, 
+\begin{eqnarray}
+s^5 + 6.0 s^4 + 18.0s^3 + 20.05s^2 + 10.1s + 0.1 = 0
+\end{eqnarray}
+となる.
+\noindent
+またRouth表は以下のようになり, 第一列の符号が同じなので, 安定であると言える.
+\begin{eqnarray}
+\begin{matrix}
+1.0 & 18.0 & 10.1 \\
+6 & 20.05 & 0.1 \\
+14.66 & 10.08 & 0 \\
+15.92 & 0.059 & 0 \\
+10.02 & 0 & 0 \\
+0.059 & 0 & 0 
+\end{matrix}
+\end{eqnarray}
+\noindent
+実際にMATLABを用いて実験すると, 以下のようなデータが得られた.
+
+\section{制御対象3: 不安定系の倒立振子}
+\noindent
+図5-1のような力学系を考える.
+\subsection{システムのダイナミクスを微分方程式で表す}
+\noindent
+並進運動は, 
+\begin{eqnarray}
+( M + m ) \ddot p &=& u\\ 
+\therefore \ddot p &=& \frac{u}{M+m}
+\end{eqnarray}
+回転運動は, 
+\begin{eqnarray}
+l\ddot\theta &=& mgr\theta - m\ddot pr\\
+\therefore \ddot \theta &=& \cfrac{1}{I}(mgr\theta-\cfrac{mr}{M+m}u)
+\end{eqnarray}
+と表される.
+以上より連立微分方程式を書くと,
+\begin{eqnarray}
+\left(\begin{array}{c}
+\dot \theta\\
+\ddot \theta\\
+\dot p\\
+\ddot p
+\end{array}
+\right)
+=
+\left(
+\begin{array}{cccc}
+0 & 1 & 0 & 0\\
+\cfrac{mgr}{I} & 0 & 0 & 0\\
+0 & 0 & 0 & 1\\
+0 & 0 & 0 & 0\\
+\end{array}
+\right)
+\left(
+\begin{array}{c}
+\theta\\
+\dot \theta\\
+p\\
+\dot p
+\end{array}
+\right)+\left(
+\begin{array}{c}
+0\\
+-\cfrac{mr}{M+m}\\
+0\\
+\cfrac{1}{M+m}
+\end{array}
+\right)
+u
+\end{eqnarray}
+となりこれを解くと, 
+ \begin{eqnarray}
+p &=& \cfrac{1}{(M+m)s^2}U \\
+\theta &=& \cfrac{1}{Is^2-\dot mgr}(\cfrac{-rm}{M+m})U
+\end{eqnarray}
+となる.
+\subsection{uからpと$\theta$への伝達関数を表現する}
+\noindent
+伝達関数はそれぞれ, 
+\begin{eqnarray}
+\left(
+\begin{array}{c}
+P=\cfrac{1}{(M+m)s^2}U\\
+\theta = \cfrac{1}{Is^2-mgr}\cfrac{-rm}{M+m}U
+\end{array}
+\right)
+\end{eqnarray}
+である.
+
+\subsection{制御なしでのモデル化を行い、シミュレーションする}
+\noindent
+図のようにモデル化を行った.
+シミュレーション結果を図及びに示す.
+\subsection{PD制御で倒立振子を立てる}
+\noindent
+ブロック線図は図のようになり, 伝達関数は, 
+\begin{eqnarray}
+G(s) &=& \frac{\theta}{U} \\
+&=&\frac{KT(1+s)\cfrac{rm}{M+m}\cfrac{1}{Is^2-mgr}} {1+KT(1+s)\cfrac{rm}{M+m}\cfrac{1}{Is^2-mgr}} \\
+&=& \frac{KT(1+s)rm}{(M+m)Is^2+KTrms+KTrm-(M+m)mgr}
+\end{eqnarray}
+である. $KD=1$の時, $\theta$のルートローカスは図のようになる. 
+
+\noindent
+このとき, Routhの安定条件を用いて, 
+\begin{eqnarray}
+\left(
+\begin{array}{c}
+KTrm>0\\
+KTrm-(M+m)mgr>0
+\end{array}
+\right)\\
+\newline
+\therefore \left(
+\begin{array}{c}
+KT>0\\
+KT>(M+m)g\approx Mg=980
+\end{array}
+\right)
+\end{eqnarray}
+
+\noindent
+すなわち, $KT>980$で安定である. これは図で読み取れる値と一致していると言える. 
+図のルートローカス上でダンピングがおよそ0.7になる$KT=3310$を適当なゲインと見做し, シミュレーションを行った. 結果を図及びに示す. 
+また, KTを他の値に設定した場合についても同様に示す.
+
+\subsection{PD制御で位置を制御する}
+\noindent
+$KD=1,KT=3310$を固定し, 位置制御のための比例ゲイン$KP$(以下Pゲイン)及び微分ゲイン$KE$(以下Dゲイン)として適切なものを探索する.
+一般にP制御のゲインを大きくすると, 定常偏差が改善されるが, 大きくしすぎるとpが発散する. 一方D制御のゲインを大きくすると, オーバーシュートが改善されるが, 大きくしすぎるとノイズを増幅してしまう.
+\noindent
+\newline
+そのことを念頭に置いて, まずモデルを図のようにして, PゲインとDゲインを分離する. 
+ここに様々な値を入れてシミュレートした結果, 次のことがわかった. 
+\begin{itemize}
+\item
+Pゲインの値が小さいとき, Dゲインを大きくすると, Lに到達するのにかかる時間Tが増加する. これはホワイトノイズやθ制御の振動を拾ってしまい, それを修正する制御をしているためと考えられる. ただし振り子の揺れは小さくできる. 
+\item
+反対にPゲインの値が大きいときは, Dゲインを大きくするとオーバーシュートが改善され, Tが減少する. その代わり, 振り子の振れが大きくなる. 
+\item
+pが発散しないようなPゲインの時, その値にかかわらず, Dゲインの値を60程度にするともっともよい特性が得られる. 観測によって得られた定性的な結論であり, 理由は不明である。
+\end{itemize}
+以上のことから, 以下の結論を得た.
+\begin{itemize}
+\item
+なるべく振り子を揺らさずに到達したい場合, $KE=30,KP=2$とするとよい.
+\item
+振動を厭わず、なるべく早く到達したい場合, $KE=8,KP=10$とするとよい.
+\item
+台車を揺らさずに、なるべく早く到達したい場合, $KE=12,KP=5$とするとよい.
+\end{itemize}
+
+\section{感想}
+\subsection{}
+
+\end{document}
